@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Scraper (with Flask)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🛍️ Product Viewer (Python Backend)</h1>
+    <button onclick="loadProducts()">Load Products</button>
+    <a href="/static/../data/products.csv" download><button>Download CSV</button></a>
+    <div id="product-list"></div>
+  </div>
+
+  <script>
+    async function loadProducts() {
+      const response = await fetch("/api/products");
+      const products = await response.json();
+      const list = document.getElementById("product-list");
+      list.innerHTML = "";
+
+      products.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${item.title}</h3>
+          <p><strong>Price:</strong> $${item.price}</p>
+          <p><strong>Rating:</strong> ${item.rating} ⭐</p>
+        `;
+        list.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
